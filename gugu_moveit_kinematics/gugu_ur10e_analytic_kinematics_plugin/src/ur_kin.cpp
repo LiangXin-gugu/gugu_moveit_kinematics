@@ -402,6 +402,19 @@ namespace ur_kinematics {
         }
       }
     }
+    
+    //gugu add
+    for (int i=0;i<num_sols;i++){
+      for (int j=0;j<6;j++){
+        if (q_sols[i*6+j] < -PI){
+          q_sols[i*6+j] = q_sols[i*6+j] + 2*PI;
+        }
+        else if (q_sols[i*6+j] > PI){
+          q_sols[i*6+j] = q_sols[i*6+j] - 2*PI;
+        }
+      }
+    }
+    
     return num_sols;
   }
 };
