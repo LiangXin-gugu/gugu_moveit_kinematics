@@ -2,6 +2,7 @@ set(MOVEIT_LIB_NAME gugu_ur10e_analytic_kinematics_plugin)
 
 add_library(${MOVEIT_LIB_NAME} SHARED
   src/ur_kin.cpp
+  src/ur_kin_gugu.cpp
   src/ur_moveit_plugin.cpp)
 
 ament_target_dependencies(${MOVEIT_LIB_NAME}

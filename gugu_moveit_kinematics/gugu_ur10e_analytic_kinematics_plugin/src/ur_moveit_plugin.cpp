@@ -46,7 +46,7 @@
 #include <kdl/kinfam_io.hpp>
 
 #include <gugu_ur10e_analytic_kinematics_plugin/ur_moveit_plugin.h>
-#include <gugu_ur10e_analytic_kinematics_plugin/ur_kin.h>
+#include <gugu_ur10e_analytic_kinematics_plugin/ur_kin_gugu.h>
 
 namespace ur_kinematics
 {
@@ -632,8 +632,8 @@ bool URKinematicsPlugin::searchPositionIK(const geometry_msgs::msg::Pose& ik_pos
     /////////////////////////////////////////////////////////////////////////////
 
     // Do the analytic IK
-    num_sols = inverse((double*) homo_ik_pose, (double*) q_ik_sols,
-                       jnt_pos_test(ur_joint_inds_start_+5));
+    num_sols = inverse_gugu((double*) homo_ik_pose, (double*) q_ik_sols,
+                           jnt_pos_test(ur_joint_inds_start_+5));
 
 
     // uint16_t num_valid_sols;
@@ -716,42 +716,42 @@ bool URKinematicsPlugin::searchPositionIK(const geometry_msgs::msg::Pose& ik_pos
       int cur_idx = weighted_diffs[i].first;
       solution = q_ik_valid_sols[cur_idx];
 
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution is: "
-      //                 << solution[0] << " " << solution[1] << " " 
-      //                 << solution[2] << " " << solution[3] << " " 
-      //                 << solution[4] << " " << solution[5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-1 is: "
-      //                 << q_ik_sols[0][0] << " " << q_ik_sols[0][1] << " " 
-      //                 << q_ik_sols[0][2] << " " << q_ik_sols[0][3] << " " 
-      //                 << q_ik_sols[0][4] << " " << q_ik_sols[0][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-2 is: "
-      //                 << q_ik_sols[1][0] << " " << q_ik_sols[1][1] << " " 
-      //                 << q_ik_sols[1][2] << " " << q_ik_sols[1][3] << " " 
-      //                 << q_ik_sols[1][4] << " " << q_ik_sols[1][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-3 is: "
-      //                 << q_ik_sols[2][0] << " " << q_ik_sols[2][1] << " " 
-      //                 << q_ik_sols[2][2] << " " << q_ik_sols[2][3] << " " 
-      //                 << q_ik_sols[2][4] << " " << q_ik_sols[2][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-4 is: "
-      //                 << q_ik_sols[3][0] << " " << q_ik_sols[3][1] << " " 
-      //                 << q_ik_sols[3][2] << " " << q_ik_sols[3][3] << " " 
-      //                 << q_ik_sols[3][4] << " " << q_ik_sols[3][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-5 is: "
-      //                 << q_ik_sols[4][0] << " " << q_ik_sols[4][1] << " " 
-      //                 << q_ik_sols[4][2] << " " << q_ik_sols[4][3] << " " 
-      //                 << q_ik_sols[4][4] << " " << q_ik_sols[4][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-6 is: "
-      //                 << q_ik_sols[5][0] << " " << q_ik_sols[5][1] << " " 
-      //                 << q_ik_sols[5][2] << " " << q_ik_sols[5][3] << " " 
-      //                 << q_ik_sols[5][4] << " " << q_ik_sols[5][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-7 is: "
-      //                 << q_ik_sols[6][0] << " " << q_ik_sols[6][1] << " " 
-      //                 << q_ik_sols[6][2] << " " << q_ik_sols[6][3] << " " 
-      //                 << q_ik_sols[6][4] << " " << q_ik_sols[6][5]);
-      // RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-8 is: "
-      //                 << q_ik_sols[7][0] << " " << q_ik_sols[7][1] << " " 
-      //                 << q_ik_sols[7][2] << " " << q_ik_sols[7][3] << " " 
-      //                 << q_ik_sols[7][4] << " " << q_ik_sols[7][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution is: "
+                      << solution[0] << " " << solution[1] << " " 
+                      << solution[2] << " " << solution[3] << " " 
+                      << solution[4] << " " << solution[5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-1 is: "
+                      << q_ik_sols[0][0] << " " << q_ik_sols[0][1] << " " 
+                      << q_ik_sols[0][2] << " " << q_ik_sols[0][3] << " " 
+                      << q_ik_sols[0][4] << " " << q_ik_sols[0][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-2 is: "
+                      << q_ik_sols[1][0] << " " << q_ik_sols[1][1] << " " 
+                      << q_ik_sols[1][2] << " " << q_ik_sols[1][3] << " " 
+                      << q_ik_sols[1][4] << " " << q_ik_sols[1][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-3 is: "
+                      << q_ik_sols[2][0] << " " << q_ik_sols[2][1] << " " 
+                      << q_ik_sols[2][2] << " " << q_ik_sols[2][3] << " " 
+                      << q_ik_sols[2][4] << " " << q_ik_sols[2][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-4 is: "
+                      << q_ik_sols[3][0] << " " << q_ik_sols[3][1] << " " 
+                      << q_ik_sols[3][2] << " " << q_ik_sols[3][3] << " " 
+                      << q_ik_sols[3][4] << " " << q_ik_sols[3][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-5 is: "
+                      << q_ik_sols[4][0] << " " << q_ik_sols[4][1] << " " 
+                      << q_ik_sols[4][2] << " " << q_ik_sols[4][3] << " " 
+                      << q_ik_sols[4][4] << " " << q_ik_sols[4][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-6 is: "
+                      << q_ik_sols[5][0] << " " << q_ik_sols[5][1] << " " 
+                      << q_ik_sols[5][2] << " " << q_ik_sols[5][3] << " " 
+                      << q_ik_sols[5][4] << " " << q_ik_sols[5][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-7 is: "
+                      << q_ik_sols[6][0] << " " << q_ik_sols[6][1] << " " 
+                      << q_ik_sols[6][2] << " " << q_ik_sols[6][3] << " " 
+                      << q_ik_sols[6][4] << " " << q_ik_sols[6][5]);
+      RCLCPP_INFO_STREAM(LOGGER, "searchPositionIK: solution-8 is: "
+                      << q_ik_sols[7][0] << " " << q_ik_sols[7][1] << " " 
+                      << q_ik_sols[7][2] << " " << q_ik_sols[7][3] << " " 
+                      << q_ik_sols[7][4] << " " << q_ik_sols[7][5]);
 
 
       // see if this solution passes the callback function test

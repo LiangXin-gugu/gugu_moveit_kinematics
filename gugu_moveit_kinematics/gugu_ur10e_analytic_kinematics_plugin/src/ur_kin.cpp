@@ -292,8 +292,10 @@ namespace ur_kinematics {
         else
           div = d4/A;
         double arccos = acos(div);
+        // q1[0] = arccos;
+        // q1[1] = 2.0*PI - arccos;
         q1[0] = arccos;
-        q1[1] = 2.0*PI - arccos;
+        q1[1] = -arccos;
       }
       else if(d4*d4 > R) {
         return num_sols;
@@ -307,14 +309,22 @@ namespace ur_kinematics {
           pos = 0.0;
         if(fabs(neg) < ZERO_THRESH)
           neg = 0.0;
-        if(pos >= 0.0)
+        // if(pos >= 0.0)
+        //   q1[0] = pos;
+        // else
+        //   q1[0] = 2.0*PI + pos;
+        // if(neg >= 0.0)
+        //   q1[1] = neg; 
+        // else
+        //   q1[1] = 2.0*PI + neg;
+        if(pos > PI)
+          q1[0] = pos - 2.0*PI;
+        else
           q1[0] = pos;
+        if(neg < -PI)
+          q1[1] = 2.0*PI + neg; 
         else
-          q1[0] = 2.0*PI + pos;
-        if(neg >= 0.0)
-          q1[1] = neg; 
-        else
-          q1[1] = 2.0*PI + neg;
+          q1[1] = neg;
       }
     }
     ////////////////////////////////////////////////////////////////////////////////
@@ -403,7 +413,7 @@ namespace ur_kinematics {
       }
     }
     
-    //gugu add
+    //gugu add: limit sols scope in -pi to pi.
     for (int i=0;i<num_sols;i++){
       for (int j=0;j<6;j++){
         if (q_sols[i*6+j] < -PI){
